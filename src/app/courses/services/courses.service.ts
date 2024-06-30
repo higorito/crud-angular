@@ -1,22 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Course } from '../model/course';
 import { HttpClient } from '@angular/common/http';
+import { first, take, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CoursesService {
 
+  private readonly API = '/assets/courses.json';
+
   //so de colocar no construtor o angular ja entende que é para injetar o serviço
   constructor(private httpClient: HttpClient) {
 
   }
 
-  list(): Course[] {
-    return [
-      { _id: '1', name: 'Angular', category: 'Frontend' },
-      { _id: '2', name: 'React', category: 'Frontend' },
-      { _id: '3', name: 'Spring Boot', category: 'Backend' }
-    ];
+  list() {
+    return this.httpClient.get<Course[]>(this.API)
+      .pipe(
+        first(), //pega o valor e cancela a inscrição, se nao for stream pode usar isso ou o take(1)
+        tap(courses => console.log(courses))
+      );
   }
 }
