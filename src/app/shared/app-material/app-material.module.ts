@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 
 //aqui vai servir so para criar um modulo compartilhado que exporta os modulos do material
@@ -10,7 +12,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   exports: [
     MatTableModule,
     MatCardModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatProgressSpinnerModule
   ]
 })
 export class AppMaterialModule { }

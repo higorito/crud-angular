@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Course } from '../model/course';
 import { HttpClient } from '@angular/common/http';
-import { first, take, tap } from 'rxjs';
+import { delay, first, take, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +19,7 @@ export class CoursesService {
     return this.httpClient.get<Course[]>(this.API)
       .pipe(
         first(), //pega o valor e cancela a inscrição, se nao for stream pode usar isso ou o take(1)
+        delay(2000),
         tap(courses => console.log(courses))
       );
   }
