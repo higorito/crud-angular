@@ -10,11 +10,6 @@
     "category": "Frontend"
   },
   {
-    "_id": 3,
-    "name": "Vue",
-    "category": "Frontend"
-  },
-  {
     "_id": 4,
     "name": "Node",
     "category": "Backend"
@@ -27,12 +22,17 @@
   {
     "_id": 6,
     "name": "MongoDB",
-    "category": "Database"
+    "category": "Data Science"
   },
   {
     "_id": 7,
     "name": "MySQL",
-    "category": "Database"
+    "category": "Data Science"
+  },
+  {
+    "_id": 12,
+    "name": "Ruby",
+    "category": "Programming"
   }
 
 ]
