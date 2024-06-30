@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { CoursesService } from './../services/courses.service';
+import { Component, OnInit } from '@angular/core';
 import { Course } from '../model/course';
 
 @Component({
@@ -6,18 +7,22 @@ import { Course } from '../model/course';
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.scss']
 })
-export class CoursesComponent {
+export class CoursesComponent implements OnInit {
 
-  courses: Course[] = [
-    { _id: '1', name: 'Angular', category: 'Frontend' },
-    { _id: '2', name: 'React', category: 'Frontend' },
-    { _id: '3', name: 'Spring Boot', category: 'Backend' }
-  ];
+  courses: Course[] = [];
 
   displayedColumns = ['name', 'category'];
 
-  constructor() {
+  // coursesService: CoursesService; //injecao inves de instanciar o serviço aqui
+
+  constructor(private coursesService: CoursesService) {
     //   this.courses = [];
+    // this.coursesService = new CoursesService(); //inves de instanciar o serviço aqui, vamos fazer a injeção de dependencia
+    // this.courses = this.coursesService.list(); //pode ser aqui ou no ngOnInit
+  }
+
+  ngOnInit(): void {
+    this.courses = this.coursesService.list();
   }
 
 }
