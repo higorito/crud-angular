@@ -8,7 +8,7 @@ import { delay, first, take, tap } from 'rxjs';
 })
 export class CoursesService {
 
-  private readonly API = '/assets/courses.json';
+  private readonly API = 'api/courses';
 
   //so de colocar no construtor o angular ja entende que é para injetar o serviço
   constructor(private httpClient: HttpClient) {
