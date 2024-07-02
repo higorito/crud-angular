@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { CoursesService } from './../services/courses.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { NonNullableFormBuilder } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -11,16 +11,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class CourseFormComponent implements OnInit {
 
-  form: FormGroup;
+  form = this.formBuilder.group({
+    // name: new FormControl<string>(''),   // name: new FormControl<string | null>(null),
+    // name: new FormControl('', { nonNullable: true }),
+    name: [''],
+    category: [''],
+  });
 
-  constructor(private FormBuilder: FormBuilder,
+  constructor(private formBuilder: NonNullableFormBuilder,   //mesma coisa que o FormBuilder so q n permite null, igual ali em cima no name
     private service: CoursesService,
     private snackBar: MatSnackBar,
     private location: Location) {
-    this.form = this.FormBuilder.group({
-      name: [null],
-      category: [null],
-    });
+    // this.form daqui foi la pra cima, aproveitar a tipagem do FormBuilder
   }
 
   submitForm() {

@@ -23,7 +23,7 @@ export class CoursesService {
       );
   }
 
-  save(record: Course) {
+  save(record: Partial<Course>) { //partial é para dizer que é um objeto parcial, nao precisa ter todos os campos
     //retorna um observable
     return this.httpClient.post<Course>(this.API, record).pipe(first());
   }
