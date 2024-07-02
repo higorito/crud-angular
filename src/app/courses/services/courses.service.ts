@@ -23,12 +23,29 @@ export class CoursesService {
       );
   }
 
+
+
   save(record: Partial<Course>) { //partial é para dizer que é um objeto parcial, nao precisa ter todos os campos
-    //retorna um observable
+    if (record._id) { //se tiver id é para atualizar
+      return this.update(record);
+    }//se nao tiver id é para criar pq ele é gerado la no backend
+    return this.create(record);
+  }
+
+  private create(record: Partial<Course>) {
     return this.httpClient.post<Course>(this.API, record).pipe(first());
+  }
+
+  private update(record: Partial<Course>) {
+    return this.httpClient.put<Course>(`${this.API}/${record._id}`, record).pipe(first());
+  }
+
+  remove(id: string) {
+    return this.httpClient.delete(`${this.API}/${id}`).pipe(first());
   }
 
   loadById(id: string) {
     return this.httpClient.get<Course>(`${this.API}/${id}`).pipe(first());
   }
+
 }
