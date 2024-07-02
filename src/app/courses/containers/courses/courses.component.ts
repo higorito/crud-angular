@@ -52,4 +52,12 @@ export class CoursesComponent implements OnInit {
     this.router.navigate(['new'], { relativeTo: this.route });  //pega a rota atual e adiciona a rota new, vem do ActivatedRoute
   }
 
+  onEdit(course: Course) {
+    this.router.navigate(['edit', course._id], { relativeTo: this.route });
+  }
+
+  onDelete(course: Course) {
+
+  }
+
 }

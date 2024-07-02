@@ -27,4 +27,8 @@ export class CoursesService {
     //retorna um observable
     return this.httpClient.post<Course>(this.API, record).pipe(first());
   }
+
+  loadById(id: string) {
+    return this.httpClient.get<Course>(`${this.API}/${id}`).pipe(first());
+  }
 }

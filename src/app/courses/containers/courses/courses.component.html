@@ -9,6 +9,8 @@
       *ngIf="courses$ | async as courses; else loading"
       [courses]="courses"
       (add)="onAdd()"
+      (edit)="onEdit($event)"
+      (delete)="onDelete($event)"
     ></app-courses-list>
     <!-- escutou o add que veio da lista e depois chamou o onAdd  -->
 
