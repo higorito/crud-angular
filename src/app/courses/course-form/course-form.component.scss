@@ -1,0 +1,25 @@
+.full-width
+{
+    width: 100%;
+}
+
+// ta sobreescrevendo o estilo do mat-card
+mat-card{
+  max-width: 80%;
+  margin: 2em auto;
+  text-align: center;
+
+}
+
+.min-width
+{
+    width: 100%;
+    min-width: 150px;
+}
+
+.card-actions
+{
+    display: flex;
+    justify-content: center;
+
+}
