@@ -10,11 +10,12 @@ import { CoursesComponent } from './containers/courses/courses.component';
 import { CoursesRoutingModule } from './courses-routing.module';
 
 
+
 @NgModule({
   declarations: [
     CoursesComponent,
     CourseFormComponent,
-    CoursesListComponent
+    CoursesListComponent,
   ],
   imports: [
     CommonModule,
