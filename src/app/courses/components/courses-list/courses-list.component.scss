@@ -10,5 +10,12 @@
 
 
 .action-column-header {
-  flex: 0,0, 50px;
+  display: flex;
+
+}
+
+.mat-icon-custom
+{
+  cursor: inherit;
+  margin-left: 8px;
 }

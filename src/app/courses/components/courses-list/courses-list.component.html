@@ -8,7 +8,11 @@
     <mat-header-cell *matHeaderCellDef>Categoria</mat-header-cell>
     <mat-cell *matCellDef="let course">
       {{ course.category }}
-      <mat-icon aria-hidden="false" aria-label="Categoria do curso">
+      <mat-icon
+        aria-hidden="false"
+        aria-label="Categoria do curso"
+        class="mat-icon-custom"
+      >
         {{ course.category | category }}
       </mat-icon>
     </mat-cell>
