@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { NonNullableFormBuilder } from '@angular/forms';
+import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { CoursesService } from './../../services/courses.service';
@@ -16,9 +16,10 @@ export class CourseFormComponent implements OnInit {
 
   form = this.formBuilder.group({
     _id: [''], //campo oculto
-    name: [''],
-    category: [''],
+    name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(60)]],
+    category: ['', [Validators.required]],
   });
+  categories: string[] = ['Frontend', 'Backend', 'Mobile'];
 
   constructor(
     private formBuilder: NonNullableFormBuilder,
@@ -55,4 +56,23 @@ export class CourseFormComponent implements OnInit {
     this.snackBar.open(message, 'OK', { duration: 2000 });
   }
 
+
+  getErrorMessage(fieldName: string) {
+    const field = this.form.get(fieldName);
+
+    if (field?.hasError('required')) {
+      return 'Campo obrigatório';
+    }
+
+    if (field?.hasError('minlength')) {
+      return `Deve ter no mínimo ${field.getError('minlength').requiredLength} caracteres`;
+    }
+
+    if (field?.hasError('maxlength')) {
+      return `Deve ter no máximo ${field.getError('maxlength').requiredLength} caracteres`;
+    }
+
+    return 'inválido';
+
+  }
 }
