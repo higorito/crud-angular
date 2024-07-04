@@ -1,11 +1,12 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { NonNullableFormBuilder, Validators } from '@angular/forms';
+import { FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { CoursesService } from './../../services/courses.service';
 import { ActivatedRoute } from '@angular/router';
 import { Course } from '../../model/course';
+import { Lesson } from '../../model/lesson';
 
 @Component({
   selector: 'app-course-form',
@@ -14,12 +15,16 @@ import { Course } from '../../model/course';
 })
 export class CourseFormComponent implements OnInit {
 
-  form = this.formBuilder.group({
-    _id: [''], //campo oculto
-    name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(60)]],
-    category: ['', [Validators.required]],
-  });
   categories: string[] = ['Frontend', 'Backend', 'Mobile'];
+  /*
+    form = this.formBuilder.group({
+      _id: [''], //campo oculto
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(60)]],
+      category: ['', [Validators.required]],
+    });
+  */
+
+  form!: FormGroup; //! para dizer que não é nulo q vai ser inicializado no ngOnInit
 
   constructor(
     private formBuilder: NonNullableFormBuilder,
@@ -33,10 +38,43 @@ export class CourseFormComponent implements OnInit {
 
   ngOnInit(): void {
     const course: Course = this.route.snapshot.data['course'];  //mesmo objeto que foi passado no resolver
-    this.form.patchValue(course);
+    // this.form.patchValue(course);
 
-    console.log(course.lessons);
+    this.form = this.formBuilder.group({
+      _id: [course._id],
+      name: [course.name, [Validators.required, Validators.minLength(3), Validators.maxLength(60)]],
+      category: [course.category, [Validators.required]],
+      lessons: this.formBuilder.array(this.createLessonFormArray(course))
+    });
+
+    console.log(this.form);
+    console.log(this.form.value);
+    console.log(this.form.get('lessons'));
   }
+
+  private createLessonFormArray(course: Course) {
+    const lessons = []
+    //tratar quando tem lesson e quando não tem
+    if (course?.lessons) {
+      //se existir itera sobre as lessons e cria um formGroup para cada uma
+      course.lessons.forEach(lesson => { lessons.push(this.createLesson(lesson)) });
+    } else {
+      //se não tiver lesson, criar um array vazio
+      lessons.push(this.createLesson());
+    }
+    return lessons;
+  }
+
+  private createLesson(lesson: Lesson = { id: '', name: '', youtubeUrl: '' }) {
+    return this.formBuilder.group({
+      id: [lesson.id],
+      name: [lesson.name],
+      youtubeUrl: [lesson.youtubeUrl]
+    });
+  }
+
+
+
 
 
   onSubmit() {
