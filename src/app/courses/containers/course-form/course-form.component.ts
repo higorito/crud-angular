@@ -7,6 +7,7 @@ import { CoursesService } from './../../services/courses.service';
 import { ActivatedRoute } from '@angular/router';
 import { Course } from '../../model/course';
 import { Lesson } from '../../model/lesson';
+import { FormUtilsService } from 'src/app/shared/form/form-utils.service';
 
 @Component({
   selector: 'app-course-form',
@@ -16,13 +17,6 @@ import { Lesson } from '../../model/lesson';
 export class CourseFormComponent implements OnInit {
 
   categories: string[] = ['Frontend', 'Backend', 'Mobile'];
-  /*
-    form = this.formBuilder.group({
-      _id: [''], //campo oculto
-      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(60)]],
-      category: ['', [Validators.required]],
-    });
-  */
 
   form!: FormGroup; //! para dizer que não é nulo q vai ser inicializado no ngOnInit
 
@@ -31,14 +25,14 @@ export class CourseFormComponent implements OnInit {
     private service: CoursesService,
     private snackBar: MatSnackBar,
     private location: Location,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public formUtils: FormUtilsService //publico para poder acessar no html
   ) {
 
   }
 
   ngOnInit(): void {
     const course: Course = this.route.snapshot.data['course'];  //mesmo objeto que foi passado no resolver
-    // this.form.patchValue(course);
 
     this.form = this.formBuilder.group({
       _id: [course._id],
@@ -46,10 +40,6 @@ export class CourseFormComponent implements OnInit {
       category: [course.category, [Validators.required]],
       lessons: this.formBuilder.array(this.createLessonFormArray(course), Validators.required)
     });
-
-    console.log(this.form);
-    console.log(this.form.value);
-    console.log(this.form.get('lessons'));
   }
 
   private createLessonFormArray(course: Course) {
@@ -94,7 +84,7 @@ export class CourseFormComponent implements OnInit {
         error => this.showError('Erro ao salvar curso!')
       );
     } else {
-      alert('Formulário inválido');
+      this.formUtils.validateAllFormFields(this.form); //valida todos os campos do form
     }
   }
 
@@ -111,28 +101,4 @@ export class CourseFormComponent implements OnInit {
     this.snackBar.open(message, 'OK', { duration: 2000 });
   }
 
-
-  getErrorMessage(fieldName: string) {
-    const field = this.form.get(fieldName);
-
-    if (field?.hasError('required')) {
-      return 'Campo obrigatório';
-    }
-
-    if (field?.hasError('minlength')) {
-      return `Deve ter no mínimo ${field.getError('minlength').requiredLength} caracteres`;
-    }
-
-    if (field?.hasError('maxlength')) {
-      return `Deve ter no máximo ${field.getError('maxlength').requiredLength} caracteres`;
-    }
-
-    return 'inválido';
-
-  }
-
-  isFormArrayRequired() {
-    const lessons = this.form.get('lessons') as UntypedFormArray;
-    return !lessons.valid && lessons.hasError('required') && lessons.touched;
-  }
 }

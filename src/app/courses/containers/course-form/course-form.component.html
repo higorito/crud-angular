@@ -10,7 +10,7 @@
       <mat-form-field class="full-width">
         <input matInput placeholder="Nome " formControlName="name" #name />
         <mat-error *ngIf="form.get('name')?.invalid">
-          {{ getErrorMessage("name") }}
+          {{ formUtils.getErrorMessage(form, "name") }}
         </mat-error>
         <mat-hint align="end"> {{ name.value.length || 0 }} /60 </mat-hint>
       </mat-form-field>
@@ -22,6 +22,9 @@
             {{ category }}
           </mat-option>
         </mat-select>
+        <mat-error *ngIf="form.get('category')?.invalid">
+          {{ formUtils.getErrorMessage(form, "category") }}
+        </mat-error>
       </mat-form-field>
 
       <mat-toolbar>
@@ -37,7 +40,10 @@
           </button>
         </mat-toolbar-row>
       </mat-toolbar>
-      <mat-error *ngIf="isFormArrayRequired()" style="text-align: left">
+      <mat-error
+        *ngIf="formUtils.isFormArrayRequired(form, 'lessons')"
+        style="text-align: left"
+      >
         Adicione pelo menos uma aula
       </mat-error>
 
@@ -54,7 +60,9 @@
               <mat-label>Nome da aula</mat-label>
               <input matInput formControlName="name" #name />
               <mat-error *ngIf="getLessonsFormArray()[i].get('name')?.invalid">
-                campo invalido
+                {{
+                  formUtils.getFormArrayErrorMessage(form, "lessons", "name", i)
+                }}
               </mat-error>
             </mat-form-field>
           </td>
@@ -63,6 +71,18 @@
               <mat-label>Link</mat-label>
               <span matPrefix>https://www.youtube.com/</span>
               <input matInput formControlName="youtubeUrl" #youtubeUrl />
+              <mat-error
+                *ngIf="getLessonsFormArray()[i].get('youtubeUrl')?.invalid"
+              >
+                {{
+                  formUtils.getFormArrayErrorMessage(
+                    form,
+                    "lessons",
+                    "youtubeUrl",
+                    i
+                  )
+                }}
+              </mat-error>
             </mat-form-field>
           </td>
           <td style="width: 5%">
