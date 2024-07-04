@@ -34,6 +34,8 @@ export class CourseFormComponent implements OnInit {
   ngOnInit(): void {
     const course: Course = this.route.snapshot.data['course'];  //mesmo objeto que foi passado no resolver
     this.form.patchValue(course);
+
+    console.log(course.lessons);
   }
 
 
