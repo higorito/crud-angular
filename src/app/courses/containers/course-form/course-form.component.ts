@@ -78,7 +78,15 @@ export class CourseFormComponent implements OnInit {
     //vai passar la no html e vai fazer um loop interando sobre cada um dos controles
   }
 
+  addNewLesson() {
+    const lessons = this.form.get('lessons') as UntypedFormArray;
+    lessons.push(this.createLesson()); //ja criou um novo formGroup vazio
+  }
 
+  removeLesson(index: number) {
+    const lessons = this.form.get('lessons') as UntypedFormArray;
+    lessons.removeAt(index);
+  }
 
   onSubmit() {
     this.service.save(this.form.value).subscribe(success => this.showSuccess('Curso salvo com sucesso!'),

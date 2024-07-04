@@ -27,7 +27,12 @@
       <mat-toolbar>
         <mat-toolbar-row>
           <span>Selecione as aulas</span>
-          <button mat-icon-button color="primary" class="btn-space">
+          <button
+            mat-icon-button
+            color="primary"
+            class="btn-space"
+            (click)="addNewLesson()"
+          >
             <mat-icon class="mat-18">add</mat-icon>
           </button>
         </mat-toolbar-row>
@@ -53,6 +58,11 @@
               <span matPrefix>https://www.youtube.com/</span>
               <input matInput formControlName="youtubeUrl" #youtubeUrl />
             </mat-form-field>
+          </td>
+          <td style="width: 5%">
+            <button mat-icon-button color="warn" (click)="removeLesson(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
           </td>
         </tr>
       </table>
