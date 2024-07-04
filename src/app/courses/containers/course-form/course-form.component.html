@@ -37,6 +37,9 @@
           </button>
         </mat-toolbar-row>
       </mat-toolbar>
+      <mat-error *ngIf="isFormArrayRequired()" style="text-align: left">
+        Adicione pelo menos uma aula
+      </mat-error>
 
       <!-- aqui vai iterar sobre lessons -->
       <table
@@ -50,6 +53,9 @@
             <mat-form-field class="full-width">
               <mat-label>Nome da aula</mat-label>
               <input matInput formControlName="name" #name />
+              <mat-error *ngIf="getLessonsFormArray()[i].get('name')?.invalid">
+                campo invalido
+              </mat-error>
             </mat-form-field>
           </td>
           <td style="width: 30%">
