@@ -1,7 +1,7 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { Observable, catchError, of } from 'rxjs';
+import { Observable, catchError, of, tap } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorDialogComponent } from 'src/app/shared/components/error-dialog/error-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,6 +9,8 @@ import { Course } from '../../model/course';
 import { CoursesService } from '../../services/courses.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmation-dialog/confirmation-dialog.component';
+import { CoursePage } from '../../model/course-page';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-courses',
@@ -17,7 +19,12 @@ import { ConfirmationDialogComponent } from 'src/app/shared/components/confirmat
 })
 export class CoursesComponent implements OnInit {
 
-  courses$: Observable<Course[]> | null = null;
+  courses$: Observable<CoursePage> | null = null;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator; //paginacao do material, vai vincular com aquele do html
+
+  pageIndex = 0;
+  pageSize = 10;
 
   // coursesService: CoursesService; //injecao inves de instanciar o serviço aqui
 
@@ -54,11 +61,16 @@ export class CoursesComponent implements OnInit {
 
   }
 
-  refresh() {
-    this.courses$ = this.coursesService.list().pipe(
+  refresh(pageEvent: PageEvent = { length: 0, pageIndex: 0, pageSize: 10 }) { //deixar o pageEvent com valor padrao, caso nao seja passado nada
+    this.courses$ = this.coursesService.list(pageEvent.pageIndex, pageEvent.pageSize).pipe(
+      tap(() => {
+        this.pageIndex = pageEvent.pageIndex;
+        this.pageSize = pageEvent.pageSize;
+      }
+      ),
       catchError(error => {
         this.onError('Não foi possível carregar os cursos');
-        return of([]);
+        return of({ courses: [], totalElements: 0, totalPages: 0 })
       })
     );
   }

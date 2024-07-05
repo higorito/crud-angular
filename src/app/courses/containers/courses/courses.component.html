@@ -3,21 +3,35 @@
     <span> Cursos Disponíveis </span>
   </mat-toolbar>
 
-  <div class="mat-elevation-z8">
+  <!-- teve que subir o cursos pra essa div para o mat-paginator poder acessar -->
+  <div
+    class="mat-elevation-z8"
+    *ngIf="courses$ | async as courses; else loading"
+  >
     <!-- extraiu o array de cursos do observable e passou para o componente filho, esse pipe extrai -->
     <app-courses-list
-      *ngIf="courses$ | async as courses; else loading"
-      [courses]="courses"
+      [courses]="courses.courses"
       (add)="onAdd()"
       (edit)="onEdit($event)"
       (delete)="onDelete($event)"
     ></app-courses-list>
     <!-- escutou o add que veio da lista e depois chamou o onAdd  -->
 
-    <ng-template #loading>
-      <div class="loading-spinner">
-        <mat-spinner></mat-spinner>
-      </div>
-    </ng-template>
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 15]"
+      showFirstLastButtons
+      aria-label="Select page of courses"
+      [pageIndex]="pageIndex"
+      [pageSize]="pageSize"
+      [length]="courses.totalElements"
+      (page)="refresh($event)"
+    >
+      >
+    </mat-paginator>
   </div>
+  <ng-template #loading>
+    <div class="loading-spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-template>
 </mat-card>
